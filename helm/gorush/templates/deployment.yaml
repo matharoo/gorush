@@ -53,7 +53,19 @@ spec:
             mountPath: /etc/gorush/config.yaml
           envFrom:
           - secretRef:
-              name: {{ .Chart.Name }}
+              name: "core-{{ .Chart.Name }}"
+          envFrom:
+          - secretRef:
+              name: "android-{{ .Chart.Name }}"
+          envFrom:
+          - secretRef:
+              name: "huawei-{{ .Chart.Name }}"
+          envFrom:
+          - secretRef:
+              name: "ios-{{ .Chart.Name }}"
+          envFrom:
+          - secretRef:
+              name: "stat-{{ .Chart.Name }}"
       volumes:
         - name: config-volume
           configMap:

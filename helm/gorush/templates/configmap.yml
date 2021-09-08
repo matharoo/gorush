@@ -21,8 +21,6 @@ data:
       ssl: {{ .ssl }}
       cert_path: {{ .cert_path }}
       key_path: {{ .key_path }}
-      cert_base64: {{ .cert_base64 }}
-      key_base64: {{ .key_base64 }}
       http_proxy: {{ .http_proxy }}
       {{ with .pid }}
       pid:
@@ -55,7 +53,6 @@ data:
     {{ with .Values.android }}
     android:
       enabled: {{ .enabled }}
-      apikey: {{ .apikey }}
       max_retry: {{ .max_retry }} 
     {{ end }}
     {{ with .Values.huawei }}
@@ -85,9 +82,7 @@ data:
     ios:
       enabled: {{ .enabled }}
       key_path: {{ .key_path }}
-      key_base64: {{ .key_base64 }} 
-      key_type: {{ .key_type }} 
-      password: {{ .password }} 
+      key_type: {{ .key_type }}
       production: {{ .production }}
       max_concurrent_pushes: {{ .max_concurrent_pushes }} 
       max_retry: {{ .max_retry }} 
@@ -109,7 +104,6 @@ data:
       {{ with .redis }}
       redis:
         addr: {{ .addr }}
-        password: {{ .password }}
         db: {{ .db }}
       {{ end }}
       {{ with .boltdb }}
