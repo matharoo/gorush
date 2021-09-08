@@ -51,6 +51,9 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/gorush/config/config.yaml
+          envFrom:
+          - secretRef:
+              name: {{ .Chart.Name }}
       volumes:
         - name: config-volume
           configMap:
