@@ -50,7 +50,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - name: config-volume
-            mountPath: /config/config.yaml
+            mountPath: /etc/gorush/config/config.yaml
       volumes:
         - name: config-volume
           configMap:
