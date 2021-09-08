@@ -42,25 +42,19 @@ spec:
               port: http
             initialDelaySeconds: 15
             periodSeconds: 15
-          env:
-          - name: GORUSH_STAT_ENGINE
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-config
-                key: stat.engine
-          {{- if .Values.redis.enabled }} 
-          - name: GORUSH_STAT_REDIS_ADDR
-            valueFrom:
-              configMapKeyRef:
-                name: {{ .Chart.Name }}-config
-                key: stat.redis.host
-          {{- end }}
           readinessProbe:
             httpGet:
               path: /
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: config-volume
+            mountPath: /config/config.yaml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: special-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

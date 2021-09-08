@@ -4,10 +4,129 @@ metadata:
   name: {{ .Chart.Name }}
   namespace: {{ .Chart.Name }}
 data:
-  # stat
-  stats:
-    engine: {{ .Values.stat.engine }}
-    {{- if .Values.redis.enabled }}
-    redis:
-      host: {{ .Values.redis.host }}:{{ .Values.redis.port }}
-    {{- end }}
+  config.yaml: |
+    {{ with .Values.core }}
+    core:
+      enabled: {{ .enabled }} 
+      address: {{ .address }} 
+      shutdown_timeout: {{ .shutdown_timeout }} 
+      port: {{ .port }} 
+      worker_num: {{ .worker_num }} 
+      queue_num: {{ .queue_num }} 
+      max_notification: {{ .max_notification }}
+      sync: {{ .sync }} 
+      feedback_hook_url: {{ .feedback_hook_url }} 
+      feedback_timeout: {{ .feedback_timeout }} 
+      mode: {{ .mode }}
+      ssl: {{ .ssl }}
+      cert_path: {{ .cert_path }}
+      key_path: {{ .key_path }}
+      cert_base64: {{ .cert_base64 }}
+      key_base64: {{ .key_base64 }}
+      http_proxy: {{ .http_proxy }}
+      {{ with .pid }}
+      pid:
+        enabled: {{ .enabled }}
+        path: {{ .path }}
+        override: {{ .override }}
+      {{ end }}
+      {{ with .auto_tls }}
+      auto_tls:
+        enabled: {{ .enabled }} 
+        folder: {{ .folder }} 
+        host: {{ .host }} 
+      {{ end }}
+    {{ end }}
+    {{ with .Values.grpc }}
+    grpc:
+      enabled: {{ .enabled }} 
+      port: {{ .port }}
+    {{ end }}
+    {{ with .Values.api }}
+    api:
+      push_uri: {{ .push_uri }}
+      stat_go_uri: {{ .stat_go_uri }}
+      stat_app_uri: {{ .stat_app_uri }}
+      config_uri: {{ .config_uri }}
+      sys_stat_uri: {{ .sys_stat_uri }}
+      metric_uri: {{ .metric_uri }}
+      health_uri: {{ .health_uri }}
+    {{ end }}
+    {{ with .Values.android }}
+    android:
+      enabled: {{ .enabled }}
+      apikey: {{ .apikey }}
+      max_retry: {{ .max_retry }} 
+    {{ end }}
+    {{ with .Values.huawei }}
+    huawei:
+      enabled: {{ .enabled }}
+      appsecret: {{ .appsecret }}
+      appid: {{ .appid }}
+      max_retry: {{ .max_retry }} 
+    {{ end }}
+    {{ with .Values.queue }}
+    queue:
+      engine: {{ .engine }} 
+      {{ with .nsq }}
+      nsq:
+        addr: {{ .addr }}
+        topic: {{ .topic }}
+        channel: {{ .channel }}
+      {{ end }}
+      {{ with .nats }}
+      nats:
+        addr: {{ .addr }}
+        subj: {{ .subj }}
+        queue: {{ .queue }}
+      {{ end }}
+    {{ end }}
+    {{ with .Values.ios }}
+    ios:
+      enabled: {{ .enabled }}
+      key_path: {{ .key_path }}
+      key_base64: {{ .key_base64 }} 
+      key_type: {{ .key_type }} 
+      password: {{ .password }} 
+      production: {{ .production }}
+      max_concurrent_pushes: {{ .max_concurrent_pushes }} 
+      max_retry: {{ .max_retry }} 
+      key_id: {{ .key_id }} 
+      team_id: {{ .team_id }} 
+    {{ end }}
+    {{ with .Values.log }}
+    log:
+      format: {{ .format }} 
+      access_log: {{ .access_log }} 
+      access_level: {{ .access_level }}
+      error_log: {{ .error_log }} 
+      error_level: {{ .error_level }}
+      hide_token: {{ .hide_token }}
+    {{ end }}
+    {{ with .Values.stat }}
+    stat:
+      engine: {{ .engine }} 
+      {{ with .redis }}
+      redis:
+        addr: {{ .addr }}
+        password: {{ .password }}
+        db: {{ .db }}
+      {{ end }}
+      {{ with .boltdb }}
+      boltdb:
+        path: {{ .path }}
+        bucket: {{ .bucket }}
+      {{ end }}
+      {{ with .buntdb }}
+      buntdb:
+        path: {{ .path }}
+      {{ end }}
+      {{ with .leveldb }}
+      leveldb:
+        path: {{ .path }}
+      {{ end }}
+      {{ with .badgerdb }}
+      badgerdb:
+        path: {{ .path }}
+      {{ end }}
+    {{ end }}
