@@ -97,29 +97,21 @@ data:
       error_level: {{ .error_level }}
       hide_token: {{ .hide_token }}
     {{ end }}
-    {{ with .Values.stat }}
     stat:
-      engine: {{ .engine }} 
-      {{ with .redis }}
+      engine: {{ .Values.stat.engine }} 
       redis:
-        addr: {{ .addr }}
-        db: {{ .db }}
-      {{ end }}
-      {{ with .boltdb }}
+        {{- if .Values.redis.enabled }}
+        addr: {{ .Release.Name }}-redis-master.default.svc.cluster.local
+        {{- else }}
+        addr: {{ .Values.stat.redis.addr }}
+        {{- end }}
+        db: {{ .Values.stat.redis.db }}
       boltdb:
-        path: {{ .path }}
-        bucket: {{ .bucket }}
-      {{ end }}
-      {{ with .buntdb }}
+        path: {{ .Values.stat.boltdb.path }}
+        bucket: {{ .Values.stat.boltdb.bucket }}
       buntdb:
-        path: {{ .path }}
-      {{ end }}
-      {{ with .leveldb }}
+        path: {{ .Values.stat.buntdb.path }}
       leveldb:
-        path: {{ .path }}
-      {{ end }}
-      {{ with .badgerdb }}
+        path: {{ .Values.stat.leveldb.path }}
       badgerdb:
-        path: {{ .path }}
-      {{ end }}
-    {{ end }}
+        path: {{ .Values.stat.badgerdb.path }}
