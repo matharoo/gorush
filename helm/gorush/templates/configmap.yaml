@@ -98,20 +98,26 @@ data:
       hide_token: {{ .hide_token }}
     {{ end }}
     stat:
-      engine: {{ .Values.stat.engine }} 
+      engine: {{ .Values.stat.engine }}
+      {{- if eq .Values.stat.engine "redis" }}
       redis:
         {{- if .Values.redis.enabled }}
-        addr: {{ .Release.Name }}-redis-master.default.svc.cluster.local
+        addr: {{ printf "%s-master" (include "common.names.fullname" .) }}
         {{- else }}
-        addr: {{ .Values.stat.redis.addr }}
+        addr: {{ .Values.redis.externalAddress }}
         {{- end }}
         db: {{ .Values.stat.redis.db }}
+      {{- else if eq .Values.stat.engine "boltdb" }}
       boltdb:
         path: {{ .Values.stat.boltdb.path }}
         bucket: {{ .Values.stat.boltdb.bucket }}
+      {{- else if eq .Values.stat.engine "buntdb" }}
       buntdb:
         path: {{ .Values.stat.buntdb.path }}
+      {{- else if eq .Values.stat.engine "leveldb" }}
       leveldb:
         path: {{ .Values.stat.leveldb.path }}
+      {{- else if eq .Values.stat.engine "badgerdb" }}
       badgerdb:
         path: {{ .Values.stat.badgerdb.path }}
+      {{- end }}
