@@ -106,7 +106,7 @@ data:
         {{- else }}
         addr: {{ .Values.redis.externalAddress }}
         {{- end }}
-        db: {{ .Values.stat.redis.db }}
+        db: {{ .Values.redis.global.redis.password }}
       {{- else if eq .Values.stat.engine "boltdb" }}
       boltdb:
         path: {{ .Values.stat.boltdb.path }}
