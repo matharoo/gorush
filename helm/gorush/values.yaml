@@ -174,4 +174,4 @@ redis:
   db: 0
   global:
     redis:
-      password: ""
+      password: "test"

@@ -7,8 +7,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ .Chart.Name }}
-  namespace: {{ .Chart.Name }}
+  name: {{ include "gorush.fullname" . }}
   labels:
     {{- include "gorush.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}

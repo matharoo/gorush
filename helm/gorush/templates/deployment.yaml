@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Chart.Name }}"
+  name: {{ include "gorush.fullname" . }}
   labels:
     {{- include "gorush.labels" . | nindent 4 }}
 spec:
@@ -50,26 +50,26 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
           - name: config
-            mountPath: /etc/gorush/config.yaml
+            mountPath: /etc/gorush/
           envFrom:
           - secretRef:
-              name: "{{ .Release.Name }}-core-{{ .Chart.Name }}"
+              name: "{{ include "gorush.fullname" . }}-core"
           envFrom:
           - secretRef:
-              name: "{{ .Release.Name }}-android-{{ .Chart.Name }}"
+              name: "{{ include "gorush.fullname" . }}-android"
           envFrom:
           - secretRef:
-              name: "{{ .Release.Name }}-huawei-{{ .Chart.Name }}"
+              name: "{{ include "gorush.fullname" . }}-huawei"
           envFrom:
           - secretRef:
-              name: "{{ .Release.Name }}-ios-{{ .Chart.Name }}"
+              name: "{{ include "gorush.fullname" . }}-ios"
           envFrom:
           - secretRef:
-              name: "{{ .Release.Name }}-stat-{{ .Chart.Name }}"
+              name: "{{ include "gorush.fullname" . }}-stat"
       volumes:
         - name: config
           configMap:
-            name: "{{ .Release.Name }}-{{ .Chart.Name }}-config"
+            name: "{{ include "gorush.fullname" . }}-config"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

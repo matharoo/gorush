@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Chart.Name }}
-  namespace: {{ .Chart.Name }}
+  name: {{ include "gorush.fullname" . }}
   labels:
     {{- include "gorush.labels" . | nindent 4 }}
 spec:
